@@ -33,7 +33,7 @@ def write_to_file(actor_lists, output_file):
 
 if __name__ == "__main__":
     chunk_size = 10000
-    data_chunks = load_data('datasets/name.basics.tsv', chunk_size=chunk_size)
+    data_chunks = load_data('datasets/name.basics_processed_filtered.tsv', chunk_size=chunk_size)
 
     total_chunks = 0
     total_actors_processed = 0
