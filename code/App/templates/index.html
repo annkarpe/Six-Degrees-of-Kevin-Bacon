@@ -20,12 +20,12 @@
     }
  
     .bgimg-1 {
-      background-image: url("haha.jpg");
+      background-image: url("{{ url_for('static', filename='haha.jpg') }}");
       min-height: 100%;
     }
  
     .bgimg-2 {
-      background-image: url("kevin.jpg");
+      background-image: url("{{ url_for('static', filename='kevin.jpg') }}");
       min-height: 400px;
     }
  
@@ -87,20 +87,6 @@
  
 <div style="position:relative;">
   <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
-    <p>still no idea</p>
-  </div>
-</div>
- 
-<div class="bgimg-3">
-  <div class="caption">
-    <span class="border" style="background-color:transparent;font-size:25px;color: #f7f7f7;">SCROLL UP</span>
-  </div>
-</div>
- 
-<div style="position:relative;">
-  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
-    <p> I don't know what to put here.</p>
- 
     <!-- Add a form to take user input -->
     <form id="nameForm" method="POST" action="/">
       <label for="userName">Enter The actor/actress:</label>
