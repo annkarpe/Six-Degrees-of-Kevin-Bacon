@@ -20,9 +20,12 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/result/<actor>/<degree>/<result>')
-def result(actor, degree, result):
-    return render_template('result.html', actor=actor, degree=degree, result=result)
+@app.route('/result/<actor>/<degree>')
+def result(actor, degree):
+    steps = find_degree(actor)[0][::-1]
+    return render_template('result.html', actor=actor, degree=degree, result=steps)
+
+
 
 
 

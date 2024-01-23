@@ -83,13 +83,13 @@
         <p>is: {{ degree }}</p>
 
         <div class="steps">
-            <h2>Steps:</h2>
-            <ul class="step-list">
-                {% for step in result %}
-                    <li class="step-list-item">{{ step }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+    <h2>Steps:</h2>
+    <ul class="step-list">
+        {% for step in result %}
+            <li class="step-list-item">{{ step }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
         <div class="back-to-home">
             <a href="{{ url_for('index') }}">Back to Home</a>
