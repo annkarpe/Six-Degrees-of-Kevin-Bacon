@@ -54,6 +54,24 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .steps {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .step-list {
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .step-list-item {
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -61,9 +79,17 @@
 <div class="overlay">
     <div class="container">
         <h1>The degree of separation for</h1>
-        <p> {{ actor }}<br></p>
+        <p>{{ actor }}</p>
         <p>is: {{ degree }}</p>
-        
+
+        <div class="steps">
+            <h2>Steps:</h2>
+            <ul class="step-list">
+                {% for step in result %}
+                    <li class="step-list-item">{{ step }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
         <div class="back-to-home">
             <a href="{{ url_for('index') }}">Back to Home</a>

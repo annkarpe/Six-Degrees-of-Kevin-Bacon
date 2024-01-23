@@ -13,18 +13,17 @@ def load_graph():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        print("post is successful") 
         load_graph()
         user_actor = request.form['userName']
-        print('user_actor', user_actor)
-        degree = find_degree(user_actor)
-        return redirect(url_for('result', actor=user_actor, degree=degree))
+        result, degree = find_degree(user_actor)
+        return redirect(url_for('result', actor=user_actor, degree=degree, result=result))
     return render_template('index.html')
 
 
-@app.route('/result/<actor>/<degree>')
-def result(actor, degree):
-    return render_template('result.html', actor=actor, degree=degree)
+@app.route('/result/<actor>/<degree>/<result>')
+def result(actor, degree, result):
+    return render_template('result.html', actor=actor, degree=degree, result=result)
+
 
 
 if __name__ == '__main__':
