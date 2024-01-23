@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("/static/haha.jpg");
+            background-size: cover;
+            background-position: center;
+            color: #3e3e3e;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .steps {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .step-list {
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .step-list-item {
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay">
+    <div class="container">
+        <h1>The degree of separation for</h1>
+        <p>{{ actor }}</p>
+        <p>is: {{ degree }}</p>
+
+        <div class="steps">
+            <h2>Steps:</h2>
+            <ul class="step-list">
+                    <li class="step-list-item">{{ step }}</li>
+            </ul>
+        </div>
+
+        <div class="back-to-home">
+            <a href="{{ url_for('index') }}">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
