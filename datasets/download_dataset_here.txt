@@ -1,8 +1,0 @@
-https://uniwersytetlodzki-my.sharepoint.com/:u:/g/personal/ul0268303_edu_uni_lodz_pl/EbRVlibC9VxMtdeb9O-aLyMBzz8lpToCb30J9Nc8Uzscjw?e=NQlAZy
-
-download and place in this folder 🎈
-
-because:
-
-remote: error: File datasets/name.basics_processed_filtered.tsv
- is 223.46 MB; this exceeds GitHub's file size limit of 100.00 MB

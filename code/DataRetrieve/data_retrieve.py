@@ -1,53 +1,79 @@
 import pandas as pd
+import os
+import shutil
 
+def load_data(file_path):
+    return pd.read_csv(file_path, delimiter='\t', na_values='\\N')
 
-def load_data(file_path, chunk_size=None):
-    chunks = pd.read_csv(file_path, delimiter='\t', na_values='\\N', chunksize=chunk_size)
-    return chunks
-
-
-def process_chunk(chunk):
+def process_data(data, checkpoint_interval=100, checkpoint_file='checkpoint.txt', output_file='output.txt'):
     actor_lists = []
 
-    for _, row in chunk.iterrows():
+    if os.path.exists(checkpoint_file):
+        try:
+            checkpoint = pd.read_csv(checkpoint_file, delimiter='\t', na_values='\\N')
+            processed_rows = checkpoint['processed_rows'].values[0]
+            print(f"Resuming from checkpoint. Processed {processed_rows} rows.")
+        except Exception as e:
+            print(f"Error reading checkpoint file: {e}")
+            return actor_lists
+    else:
+        processed_rows = 0
+
+    for idx, row in data.iloc[processed_rows:].iterrows():
         known_for_titles = str(row['knownForTitles']).split(',')
 
         actors_in_same_movie = set()
         for title in known_for_titles:
-            movie_row = chunk[chunk['knownForTitles'].str.contains(title, na=False)]
-            
+            print(f'\ncurrent title: {title}')
+            movie_row = data[data['knownForTitles'].str.contains(title, na=False)]
             actors_in_same_movie.update(movie_row['primaryName'].tolist())
 
         actors_in_same_movie.discard(row['primaryName'])
         actor_lists.append([row['primaryName']] + list(actors_in_same_movie))
 
+        if idx % checkpoint_interval == 0:
+            # Saving checkpoint to a temp file
+            temp_checkpoint_file = 'checkpoint_temp.txt'
+            checkpoint_data = pd.DataFrame({'processed_rows': [idx]})
+            checkpoint_data.to_csv(temp_checkpoint_file, sep='\t', index=False)
+
+            # Moving the temp file to the final checkpoint file
+            try:
+                shutil.move(temp_checkpoint_file, checkpoint_file)
+            except Exception as e:
+                print(f"Error moving checkpoint file: {e}")
+                os.remove(temp_checkpoint_file)
+
+            # Writing to the output file and clear the actor_lists
+            write_to_file(actor_lists, output_file)
+            actor_lists = []
+
+            print(f"Checkpoint: Processed {idx} rows.")
+
+    # Writing any remaining data to the output file
+    write_to_file(actor_lists, output_file)
+
     return actor_lists
 
-
 def write_to_file(actor_lists, output_file):
-    with open(output_file, 'w') as file:
+    with open(output_file, 'a') as file:
         for actor_list in actor_lists:
             file.write(','.join(actor_list) + ',\n')
 
 
-
 if __name__ == "__main__":
-    chunk_size = 10000
-    data_chunks = load_data('datasets/name.basics_processed_filtered.tsv', chunk_size=chunk_size)
+    input_file = 'datasets/name.basics_processed_filtered_final.tsv'
+    output_file = 'output.txt'
+    checkpoint_file = 'checkpoint.txt'
 
-    total_chunks = 0
-    total_actors_processed = 0
+    print("\nStarting load_data()\n")
+    data = load_data(input_file)
 
-    for chunk_number, chunk in enumerate(data_chunks):
-        print(f"\nProcessing Chunk {chunk_number + 1}...")
+    print("\nStarting process_data()\n")
+    actor_lists = process_data(data, checkpoint_file=checkpoint_file, output_file=output_file)
 
-        actor_lists = process_chunk(chunk)
+    total_actors_processed = len(data)
 
-        write_to_file(actor_lists, f'output_chunk_{chunk_number + 1}.txt')
-
-        total_chunks += 1
-        total_actors_processed += len(chunk)
-
-        print(f"\nProcessed {total_actors_processed} actors across {total_chunks} chunks.")
+    print(f"\nProcessed {total_actors_processed} actors.\n")
 
     print("\nProcessing Complete.")
