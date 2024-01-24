@@ -18,23 +18,25 @@ def read_graph_from_txt(filename):
 
 def find_degree(actor):
     if actor == kevin:
-        return 0
+        return ([kevin], 0)
 
     q_actor_with_degree = Queue()
     visited_actors = set()
 
-    q_actor_with_degree.put((kevin, 0))
+    q_actor_with_degree.put(([kevin], 0))
 
     while not q_actor_with_degree.empty():
-        current_actor, current_degree = q_actor_with_degree.get()
+        current_actors, current_degree = q_actor_with_degree.get()
+        current_actor = current_actors[-1]
 
         for actor_connected_to_current in graph.get(current_actor, []):
             if actor_connected_to_current == actor:
-                return current_degree + 1
+                return (current_actors + [actor_connected_to_current], current_degree + 1)
 
             if actor_connected_to_current not in visited_actors:
                 visited_actors.add(actor_connected_to_current)
-                q_actor_with_degree.put((actor_connected_to_current, current_degree + 1))
+                q_actor_with_degree.put((current_actors + [actor_connected_to_current], current_degree + 1))
 
-    return -1
+    return (["No path found"], -1)
+
 
